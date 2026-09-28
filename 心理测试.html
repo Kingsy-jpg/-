@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07090e">
+<title>Boundary Archive｜测测你的心理边界感</title>
+<style>
+:root{
+  --bg:#07090e;--card:rgba(17,20,28,.72);--text:#eee9df;--sub:#9da5b1;
+  --gold:#d9c4a3;--gold2:#f3e5c5;--line:rgba(255,255,255,.09);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+body{overflow-x:hidden}
+button{font:inherit}
+#starfield,#nebula{position:fixed;inset:0;pointer-events:none}
+#starfield{z-index:-5}.shoot{position:fixed;z-index:-3;width:2px;height:90px;
+background:linear-gradient(transparent,rgba(255,255,255,.8));transform:rotate(45deg);
+animation:shoot 8s linear infinite;opacity:0}
+.s1{top:-10%;left:12%}.s2{top:-25%;left:72%;animation-delay:4s}
+@keyframes shoot{0%{transform:translate(0,0) rotate(45deg);opacity:0}12%{opacity:.8}
+45%,100%{transform:translate(500px,700px) rotate(45deg);opacity:0}}
+#nebula{z-index:-4;background:
+radial-gradient(circle at 15% 20%,rgba(104,78,47,.18),transparent 30%),
+radial-gradient(circle at 80% 10%,rgba(78,93,155,.14),transparent 28%),
+radial-gradient(circle at 70% 80%,rgba(115,62,125,.11),transparent 30%);
+filter:blur(25px);animation:neb 18s ease-in-out infinite alternate}
+@keyframes neb{to{transform:scale(1.06) translateY(-20px)}}
+.page{display:none;min-height:100svh;padding:24px 18px max(28px,env(safe-area-inset-bottom));
+align-items:center;justify-content:center}.page.active{display:flex;animation:in .65s ease both}
+@keyframes in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.card{width:min(680px,100%);padding:32px 26px;border:1px solid var(--line);border-radius:30px;
+background:var(--card);backdrop-filter:blur(20px);box-shadow:0 25px 80px #0008;
+position:relative;overflow:hidden}.card:before{content:"";position:absolute;inset:0;pointer-events:none;
+background:linear-gradient(135deg,rgba(217,196,163,.08),transparent 35%,rgba(111,147,199,.06))}
+.eyebrow,.chapter{color:var(--gold);font-size:11px;letter-spacing:4px;text-transform:uppercase}
+.eyebrow{margin-bottom:20px}.title{font-family:Georgia,"Noto Serif SC",serif;font-size:48px;line-height:1.18;font-weight:400;margin-bottom:20px}
+.quote{border-left:2px solid #d9c4a377;padding-left:18px;font-family:Georgia,"Noto Serif SC",serif;
+font-size:18px;line-height:2;margin:30px 0;color:#eee6d9}.subtitle,.chapterText{color:var(--sub);font-size:14px;line-height:2}
+.chapter{margin-bottom:13px}.chapterTitle{font-family:Georgia,"Noto Serif SC",serif;font-size:34px;font-weight:400;line-height:1.35;margin-bottom:16px}
+.btn{width:100%;border:0;border-radius:999px;padding:16px;margin-top:28px;color:#fff;cursor:pointer;
+background:linear-gradient(110deg,#5d4938,#9f7f5f,#d9c4a3);background-size:200% 100%;animation:grad 7s ease infinite}
+.btn.alt{background:rgba(255,255,255,.06);border:1px solid var(--line);animation:none}
+@keyframes grad{50%{background-position:100% 50%}}
+.progressTop{display:flex;justify-content:space-between;color:#8f97a3;font-size:12px;margin:22px 0 10px}
+.progressBox{height:4px;background:#242934;border-radius:10px;overflow:hidden;margin-bottom:30px}
+.progress{height:100%;background:linear-gradient(90deg,#8e6f55,#d9c4a3);transition:.4s}
+.question{font-family:Georgia,"Noto Serif SC",serif;font-size:28px;line-height:1.5;margin-bottom:25px}
+.option{position:relative;padding:17px;border:1px solid var(--line);background:rgba(255,255,255,.035);
+border-radius:19px;margin:12px 0;cursor:pointer;transition:.25s;overflow:hidden}
+.option:hover,.option.active{border-color:#d9c4a355;background:rgba(217,196,163,.09);transform:translateY(-1px)}
+.optionLetter{display:block;color:var(--gold);font-size:11px;letter-spacing:2px;margin-bottom:7px}
+.optionText{font-size:14px;line-height:1.8}
+.hint{text-align:center;color:#68717d;font-size:11px;line-height:1.8;margin-top:17px}
+#orbitCanvas,#starChart{display:block;margin:18px auto}
+.reportBlock{border-top:1px solid var(--line);padding-top:24px;margin-top:25px}
+.reportBlock h3{font-size:14px;color:var(--gold);font-weight:400;letter-spacing:2px}
+.reportBlock p{font-size:14px;line-height:2;color:#d4d0c8;white-space:pre-line}
+.resultScore{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.scoreItem{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:15px;padding:12px}
+.scoreItem b{display:block;color:var(--gold);font-size:13px;margin-bottom:5px}.scoreItem span{font-size:12px;color:#8f97a3}
+.dimensionExplain{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.dimensionExplain div{padding:13px;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:15px;
+font-size:11px;color:#858e9a;line-height:1.7}.dimensionExplain b{color:var(--gold);font-size:12px}
+#poster{display:none}
+@media(max-width:480px){.card{padding:27px 20px;border-radius:26px}.title{font-size:40px}.question{font-size:25px}
+.chapterTitle{font-size:30px}.dimensionExplain{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas><div id="nebula"></div><div class="shoot s1"></div><div class="shoot s2"></div>
+
+<section class="page active" id="home">
+<div class="card">
+<div class="eyebrow">BOUNDARY ARCHIVE</div>
+<div class="title">测测你的<br>心理边界感</div>
+<div class="quote">你以为你在保护隐私，<br>其实你一直在划分人与人之间的距离。</div>
+<p class="subtitle">20 个生活情境，没有标准答案。<br>这不是一份判断，而是一份关于关系距离的档案。</p>
+<button class="btn" onclick="show('intro')">开始探索</button>
+<p class="hint">趣味心理自测 · 不用于医学或心理疾病诊断</p>
+</div>
+</section>
+
+<section class="page" id="intro">
+<div class="card">
+<div class="chapter">BEFORE WE START</div>
+<div class="chapterTitle">这不是关于“边界强弱”的测试。</div>
+<p class="chapterText">接下来，你会遇到二十个日常瞬间。有些发生在宿舍，有些发生在聊天框里，也有一些只是一个很短的念头。</p>
+<p class="chapterText">不要选择“成熟”或“应该”的答案。选那个最像你第一反应的选项。</p>
+<button class="btn" onclick="startQuiz()">进入第一章</button>
+</div>
+</section>
+
+<section class="page" id="quiz">
+<div class="card">
+<div class="chapter" id="chapterName"></div>
+<div class="progressTop"><span id="count"></span><span>Boundary Archive</span></div>
+<div class="progressBox"><div class="progress" id="bar"></div></div>
+<div class="question" id="qtext"></div>
+<div id="options"></div>
+<div class="hint" id="hint"></div>
+</div>
+</section>
+
+<section class="page" id="analysis">
+<div class="card" style="text-align:center">
+<div class="eyebrow">GENERATING ARCHIVE</div>
+<div class="title" style="font-size:40px">正在生成你的<br>心理边界星图</div>
+<canvas id="orbitCanvas" width="260" height="260"></canvas>
+<p class="subtitle" id="analysisText">读取人与人之间的距离……</p>
+</div>
+</section>
+
+<section class="page" id="result">
+<div class="card">
+<div class="eyebrow">YOUR BOUNDARY ARCHIVE</div>
+<div class="title" id="resultName"></div>
+<div class="quote" id="resultQuote"></div>
+<canvas id="starChart" width="340" height="340"></canvas>
+<div class="resultScore" id="scores"></div>
+<div class="dimensionExplain" id="explains"></div>
+<div id="report"></div>
+<button class="btn" onclick="makePoster()">生成我的边界档案</button>
+<button class="btn alt" onclick="location.reload()">重新测试</button>
+<p class="hint">这个结果不是在判断你对不对，而是在描述你习惯如何与别人保持距离。</p>
+</div>
+</section>
+
+<script>
+const questions=[
+{ch:"Chapter 1 · 房间与距离",t:"第一次有人来到你的房间，你几乎下意识先注意到什么？",o:[
+["有没有地方可以让他舒服坐下。",{space:-1,emotion:1,expression:0,openness:2,trust:1,elasticity:1}],
+["桌面是不是有点乱。",{space:1,emotion:0,expression:1,openness:0,trust:0,elasticity:0}],
+["他会不会随手翻桌上的东西。",{space:3,emotion:1,expression:0,openness:-1,trust:-1,elasticity:0}],
+["突然开始解释房间里某样东西为什么在那里。",{space:0,emotion:2,expression:2,openness:1,trust:0,elasticity:1}]
+]},
+{ch:"Chapter 1 · 房间与距离",t:"图书馆还有很多空位，一个陌生人偏偏坐到了离你很近的位置。",o:[
+["没什么感觉，继续做自己的事情。",{space:-1,emotion:0,expression:0,openness:2,trust:1,elasticity:2}],
+["稍微把自己的东西往旁边收一点。",{space:2,emotion:1,expression:1,openness:0,trust:0,elasticity:1}],
+["会先观察，他是不是还有别的位置可以坐。",{space:2,emotion:2,expression:0,openness:0,trust:-1,elasticity:0}],
+["过一会儿自己换一个位置。",{space:3,emotion:2,expression:-1,openness:-1,trust:-1,elasticity:-1}]
+]},
+{ch:"Chapter 1 · 房间与距离",t:"有人说：“借一下你的耳机，就一分钟。”",o:[
+["递过去，没有多想。",{space:-1,emotion:0,expression:0,openness:2,trust:2,elasticity:2}],
+["先把音乐暂停，再递给对方。",{space:1,emotion:0,expression:1,openness:1,trust:1,elasticity:1}],
+["笑着说：“我给你放外放吧。”",{space:2,emotion:1,expression:2,openness:0,trust:0,elasticity:2}],
+["会下意识说：“要不你用我的另一副？”",{space:3,emotion:1,expression:1,openness:-1,trust:-1,elasticity:0}]
+]},
+{ch:"Chapter 1 · 房间与距离",t:"朋友聊天时，很自然地坐到了你的床上。",o:[
+["没关系，大家都会坐。",{space:-1,emotion:0,expression:0,openness:2,trust:2,elasticity:2}],
+["顺手递一个抱枕或者坐垫过去。",{space:2,emotion:1,expression:2,openness:1,trust:1,elasticity:2}],
+["心里有点不自在，但不会表现出来。",{space:2,emotion:3,expression:-1,openness:0,trust:0,elasticity:-1}],
+["会顺手整理一下床上的东西。",{space:3,emotion:1,expression:1,openness:-1,trust:0,elasticity:1}]
+]},
+{ch:"Chapter 2 · 雨落进来的地方",t:"凌晨一点，一个朋友发来消息：“你能陪我聊聊吗？”",o:[
+["立刻回复，因为怕他一个人。",{space:-1,emotion:3,expression:0,openness:2,trust:2,elasticity:2}],
+["回复一句“我在”，但不会马上开始长聊天。",{space:1,emotion:2,expression:2,openness:1,trust:1,elasticity:2}],
+["第二天认真回复，并解释自己昨晚睡着了。",{space:2,emotion:1,expression:2,openness:0,trust:1,elasticity:1}],
+["先问发生了什么，再决定有没有精力继续聊。",{space:2,emotion:1,expression:3,openness:1,trust:0,elasticity:2}]
+]},
+{ch:"Chapter 2 · 雨落进来的地方",t:"认识不到两周的人，突然开始分享很多自己的秘密。",o:[
+["认真听，也会分享一点自己的故事。",{space:-1,emotion:2,expression:1,openness:3,trust:2,elasticity:2}],
+["认真听，但很少分享自己。",{space:1,emotion:2,expression:1,openness:0,trust:0,elasticity:1}],
+["会有点疑惑：为什么这么快告诉我？",{space:2,emotion:2,expression:0,openness:-1,trust:-1,elasticity:0}],
+["会慢慢把聊天带回轻松一点的话题。",{space:1,emotion:1,expression:3,openness:1,trust:1,elasticity:3}]
+]},
+{ch:"Chapter 2 · 雨落进来的地方",t:"有人哭的时候，你通常会……",o:[
+["抱抱对方，先陪着他。",{space:-1,emotion:3,expression:1,openness:2,trust:2,elasticity:2}],
+["递纸巾、倒水，不急着说话。",{space:1,emotion:2,expression:2,openness:1,trust:1,elasticity:2}],
+["会很想安慰，但不知道怎么开口。",{space:0,emotion:3,expression:-1,openness:0,trust:1,elasticity:0}],
+["先确认他想要陪伴还是建议。",{space:2,emotion:1,expression:3,openness:1,trust:1,elasticity:3}]
+]},
+{ch:"Chapter 2 · 雨落进来的地方",t:"有人突然问：“你最近是不是不开心？”",o:[
+["会说“没有啦”，然后笑过去。",{space:1,emotion:2,expression:-1,openness:-1,trust:-1,elasticity:0}],
+["会反问一句：“为什么这么觉得？”",{space:2,emotion:1,expression:2,openness:0,trust:1,elasticity:2}],
+["如果是熟人，会告诉一点点。",{space:0,emotion:1,expression:1,openness:2,trust:2,elasticity:2}],
+["会想一下，决定要不要说真实答案。",{space:1,emotion:2,expression:2,openness:1,trust:1,elasticity:3}]
+]},
+{ch:"Chapter 3 · 默认靠近",t:"朋友发了一张合照，没有问你，就发了朋友圈。",o:[
+["点赞，然后保存照片。",{space:-1,emotion:0,expression:0,openness:2,trust:2,elasticity:2}],
+["会私聊一句：“这张能发吗？”",{space:2,emotion:1,expression:3,openness:0,trust:1,elasticity:2}],
+["没说什么，但以后希望先告诉我。",{space:2,emotion:2,expression:0,openness:0,trust:0,elasticity:0}],
+["第一反应是看看自己有没有被拍好看。",{space:0,emotion:1,expression:0,openness:1,trust:1,elasticity:2}]
+]},
+{ch:"Chapter 3 · 默认靠近",t:"有人默认你周末一定有空，说：“那周六就你陪我去吧。”",o:[
+["如果没安排，一般都会答应。",{space:-1,emotion:0,expression:0,openness:2,trust:2,elasticity:2}],
+["先问具体是什么事情。",{space:1,emotion:0,expression:2,openness:1,trust:1,elasticity:2}],
+["告诉他自己还没决定周六怎么安排。",{space:2,emotion:1,expression:2,openness:0,trust:0,elasticity:2}],
+["心里第一反应是：为什么默认我会去？",{space:3,emotion:2,expression:0,openness:-1,trust:-1,elasticity:0}]
+]},
+{ch:"Chapter 3 · 默认靠近",t:"你发现别人把你们聊天记录截图发给了第三个人。",o:[
+["如果没什么内容，就算了。",{space:0,emotion:0,expression:0,openness:2,trust:1,elasticity:2}],
+["会问一句：“你发给谁了？”",{space:2,emotion:1,expression:2,openness:0,trust:1,elasticity:2}],
+["不会说，但以后会少聊一点私事。",{space:2,emotion:2,expression:-1,openness:-1,trust:-1,elasticity:0}],
+["明确告诉对方，这件事让我不舒服。",{space:3,emotion:1,expression:3,openness:0,trust:0,elasticity:1}]
+]},
+{ch:"Chapter 3 · 默认靠近",t:"聚餐结束以后，大家准备一起走回宿舍。其实你想一个人走。",o:[
+["还是一起走。",{space:-1,emotion:0,expression:0,openness:2,trust:2,elasticity:2}],
+["找个理由慢一点，等大家先走。",{space:2,emotion:1,expression:1,openness:0,trust:0,elasticity:1}],
+["直接说：“我想自己走一会儿。”",{space:2,emotion:0,expression:3,openness:1,trust:1,elasticity:2}],
+["问大家走哪条路，再决定自己怎么走。",{space:1,emotion:0,expression:2,openness:1,trust:1,elasticity:3}]
+]},
+{ch:"Chapter 4 · 靠近不是拥有",t:"一个你很喜欢的人，开始每天都会找你聊天。",o:[
+["会觉得开心，也很期待每天聊天。",{space:-1,emotion:2,expression:0,openness:3,trust:3,elasticity:2}],
+["喜欢聊天，但偶尔也想有一天什么都不聊。",{space:2,emotion:1,expression:2,openness:2,trust:2,elasticity:3}],
+["会开始担心，如果哪天不聊会不会变得奇怪。",{space:0,emotion:3,expression:1,openness:2,trust:2,elasticity:1}],
+["聊天频率不会影响我喜不喜欢一个人。",{space:3,emotion:1,expression:2,openness:1,trust:1,elasticity:2}]
+]},
+{ch:"Chapter 4 · 靠近不是拥有",t:"对方突然问：“你的手机密码是什么？”",o:[
+["告诉他，对我来说这不是什么大事。",{space:-1,emotion:0,expression:0,openness:3,trust:3,elasticity:2}],
+["会问一句：“为什么想知道？”",{space:2,emotion:1,expression:2,openness:0,trust:1,elasticity:2}],
+["会笑着转移话题。",{space:2,emotion:1,expression:3,openness:1,trust:0,elasticity:3}],
+["觉得亲密和知道密码没有关系。",{space:3,emotion:0,expression:3,openness:1,trust:1,elasticity:2}]
+]},
+{ch:"Chapter 4 · 靠近不是拥有",t:"你和一个很重要的人吵架了。冷静下来以后，你更可能先做什么？",o:[
+["主动联系，想把事情说开。",{space:0,emotion:2,expression:3,openness:3,trust:2,elasticity:3}],
+["先写很多话，但不一定发出去。",{space:1,emotion:3,expression:1,openness:2,trust:1,elasticity:2}],
+["需要一个人待一会儿，再决定要不要联系。",{space:3,emotion:2,expression:1,openness:1,trust:1,elasticity:2}],
+["会等双方都平静，再重新开始聊天。",{space:2,emotion:1,expression:2,openness:2,trust:2,elasticity:3}]
+]},
+{ch:"Chapter 4 · 靠近不是拥有",t:"突然有一天，没有任何人联系你。",o:[
+["会享受难得的安静。",{space:3,emotion:0,expression:0,openness:0,trust:1,elasticity:2}],
+["会觉得有一点点奇怪，但很快就继续做自己的事。",{space:2,emotion:1,expression:0,openness:1,trust:1,elasticity:3}],
+["会开始想：是不是发生了什么。",{space:0,emotion:3,expression:1,openness:2,trust:2,elasticity:1}],
+["会主动联系一个自己想联系的人。",{space:1,emotion:2,expression:2,openness:2,trust:3,elasticity:3}]
+]},
+{ch:"Chapter 5 · 星图之外",t:"如果人与人的距离是一扇门，你更想推开哪一扇？",o:[
+["半开着的木门，里面有暖黄色灯光。",{space:1,emotion:2,expression:1,openness:3,trust:3,elasticity:3}],
+["透明的玻璃门，可以看见里面，却要敲门。",{space:2,emotion:1,expression:2,openness:1,trust:2,elasticity:2}],
+["厚重的深色门，没有门把手。",{space:3,emotion:2,expression:1,openness:-1,trust:-1,elasticity:0}],
+["一扇没有门框、只有风吹进来的门。",{space:0,emotion:1,expression:2,openness:2,trust:1,elasticity:4}]
+]},
+{ch:"Chapter 5 · 星图之外",t:"如果今晚只能选择一种天气陪你散步，你会选哪一种？",o:[
+["起雾的夜晚。",{space:2,emotion:3,expression:1,openness:0,trust:0,elasticity:2}],
+["有海风的夜晚。",{space:1,emotion:1,expression:1,openness:2,trust:2,elasticity:4}],
+["刚下完雨的夜晚。",{space:1,emotion:2,expression:2,openness:2,trust:1,elasticity:3}],
+["满天都是星星的夜晚。",{space:0,emotion:1,expression:1,openness:3,trust:3,elasticity:2}]
+]},
+{ch:"Chapter 5 · 星图之外",t:"如果你的情绪有一个形状，它更像……",o:[
+["一座湖，别人靠近时会起波纹。",{space:2,emotion:3,expression:1,openness:1,trust:1,elasticity:2}],
+["一片森林，很多地方别人还没走到。",{space:3,emotion:2,expression:1,openness:0,trust:0,elasticity:1}],
+["一座岛，桥不是每天都会出现。",{space:3,emotion:2,expression:2,openness:1,trust:-1,elasticity:3}],
+["一片海，潮汐每天都不一样。",{space:1,emotion:2,expression:2,openness:2,trust:2,elasticity:4}]
+]},
+{ch:"Chapter 5 · 星图之外",t:"最后一题。如果世界上有一颗星，只属于你，它应该是什么样子？",o:[
+["一直亮着，别人远远就能看见。",{space:0,emotion:1,expression:1,openness:3,trust:3,elasticity:2}],
+["平时很暗，只在夜深的时候发光。",{space:2,emotion:3,expression:1,openness:1,trust:2,elasticity:2}],
+["会随着靠近的人改变颜色。",{space:1,emotion:2,expression:2,openness:2,trust:2,elasticity:4}],
+["藏在一片星云里，需要慢慢找到。",{space:3,emotion:2,expression:2,openness:0,trust:0,elasticity:1}]
+]}
+];
+
+const whispers=["有些人先回应世界，有些人先观察世界。","距离有时候不是后退，而是留白。","你不一定在拒绝别人，也可能是在照顾自己。","人与人的边界，常常藏在默认里。","并不是每一次沉默，都代表默认。"];
+const state={i:0,scores:{space:0,emotion:0,expression:0,openness:0,trust:0,elasticity:0}};
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");scrollTo(0,0)}
+function startQuiz(){state.i=0;state.scores={space:0,emotion:0,expression:0,openness:0,trust:0,elasticity:0};show("quiz");render()}
+function render(){
+  const q=questions[state.i], n=state.i+1;
+  $("chapterName").textContent=q.ch;$("count").textContent=String(n).padStart(2,"0")+" / 20";
+  $("bar").style.width=n/20*100+"%";$("qtext").textContent=q.t;$("hint").textContent=whispers[Math.floor(Math.random()*whispers.length)];
+  $("options").innerHTML="";
+  q.o.forEach((item,k)=>{const d=document.createElement("div");d.className="option";d.innerHTML=`<span class="optionLetter">${String.fromCharCode(65+k)}</span><div class="optionText">${item[0]}</div>`;
+  d.onclick=()=>choose(k,d);$("options").appendChild(d)})
+}
+function choose(k,d){
+  document.querySelectorAll(".option").forEach(x=>x.classList.remove("active"));d.classList.add("active");
+  const s=questions[state.i].o[k][1];Object.keys(s).forEach(x=>state.scores[x]+=s[x]);
+  setTimeout(()=>{state.i++;if(state.i<20){if([4,8,12,16].includes(state.i))chapterTransition();else render()}else analyze()},280)
+}
+function chapterTransition(){
+  const titles={4:["Chapter 2 · 雨落进来的地方","有的人分享情绪，是靠近。\n有的人分享情绪，是进入。"],
+  8:["Chapter 3 · 默认靠近","很多边界，都发生在一句：\n“我以为这样也可以。”"],
+  12:["Chapter 4 · 靠近不是拥有","喜欢一个人，并不意味着放弃自己的房间。\n亲密，也需要空气。"],
+  16:["Chapter 5 · 星图之外","接下来，没有标准情境。\n请相信第一眼想选择的东西。"]}[state.i];
+  $("quiz").querySelector(".card").innerHTML=`<div class="chapter">${titles[0]}</div><div class="chapterTitle">${titles[0].split("·")[1]}</div><p class="chapterText" style="white-space:pre-line">${titles[1]}</p>`;
+  setTimeout(()=>{location.reload?restoreQuizCard():null},1200);
+}
+function restoreQuizCard(){
+  const c=$("quiz").querySelector(".card");c.innerHTML=`<div class="chapter" id="chapterName"></div><div class="progressTop"><span id="count"></span><span>Boundary Archive</span></div><div class="progressBox"><div class="progress" id="bar"></div></div><div class="question" id="qtext"></div><div id="options"></div><div class="hint" id="hint"></div>`;render()
+}
+function analyze(){
+  show("analysis");let t=0;const msgs=["读取人与人之间的距离……","整理你的空间感受……","寻找情绪进入你的方式……","连接属于你的六颗星……","边界档案即将完成。"];
+  const timer=setInterval(()=>{$("analysisText").textContent=msgs[Math.min(4,Math.floor(t/12))];t++},120);
+  orbit();
+  setTimeout(()=>{clearInterval(timer);buildResult()},4300)
+}
+function orbit(){
+  const c=$("orbitCanvas"),x=c.getContext("2d");let a=0;
+  function f(){x.clearRect(0,0,260,260);x.save();x.translate(130,130);[60,90].forEach(r=>{x.beginPath();x.arc(0,0,r,0,7);x.strokeStyle="rgba(217,196,163,.15)";x.stroke()});
+  for(let i=0;i<6;i++){let q=a+i*Math.PI/3;let px=Math.cos(q)*90,py=Math.sin(q)*90;x.beginPath();x.arc(px,py,3,0,7);x.fillStyle="#d9c4a3";x.fill()}
+  x.restore();a+=.012;if(document.getElementById("analysis").classList.contains("active"))requestAnimationFrame(f)}f()
+}
+const reports={
+"透明玻璃型":{sum:"你愿意让世界看见自己，因为你相信真实本身就是一种连接。",desc:"你的边界像一块透明的玻璃。它不是没有厚度，而是不喜欢用墙阻隔别人。你通常不会刻意隐藏自己，对熟悉的人愿意分享情绪、经历和想法。你的靠近不是依赖，而是一种主动选择。",beh:"在人际关系里，你往往比较容易打开话题。朋友可能觉得和你相处舒服，因为你不会制造太多距离。你愿意倾听，也愿意回应。",mis:"别人可能会觉得你“很好接近”，甚至误以为你的所有部分都可以被进入。实际上，你只是愿意展示，而不是没有私人区域。",bound:"你的边界通常不在“距离”，而在“真诚”。只要对方保持尊重，你可以接受靠近；一旦关系失去诚意，你会慢慢关闭窗口。",key:"允许靠近，但拒绝伪装。"},
+"半掩门型":{sum:"你习惯留下一扇门，但钥匙通常握在自己手里。",desc:"你的边界像一扇半掩的门。你并不排斥别人进入自己的世界，只是希望靠近发生在合适的时间。你珍惜关系，也珍惜自己的独处。",beh:"你通常是可靠的朋友。别人需要你的时候，你愿意出现，但不会轻易把全部情绪交出去。你的信任需要时间积累。",mis:"有人可能觉得你“不够热情”。其实不是冷淡，而是你需要确认这个关系是否值得打开更多空间。",bound:"你的边界是一种节奏感。不是拒绝靠近，而是决定靠近的速度。",key:"慢慢打开。"},
+"城墙型":{sum:"你不是拒绝世界，而是在守护自己的内部秩序。",desc:"你的心理边界像一座城。城墙存在，不代表里面荒芜。相反，你通常拥有丰富的内部世界，只是进入那里需要时间、信任和安全感。",beh:"在人际关系中，你可能比较谨慎。你观察很多细节，一句话、一件小事、一次承诺是否兑现，都可能影响你的判断。",mis:"别人可能觉得你难接近，但实际上，你只是不会把重要的位置随便开放。",bound:"你的边界通常在信任。一旦有人越过你的安全线，恢复关系可能需要更长时间。",key:"保护，是为了保存。"},
+"镜面型":{sum:"你很敏锐，能够感受到别人，也清楚自己需要什么。",desc:"你的边界像镜面。你会映照别人，也会观察自己的状态。你对关系中的变化比较敏感。",beh:"你通常很会察觉气氛，知道什么时候应该靠近，什么时候应该退一步。你在人际关系中具有较强的调整能力。",mis:"别人可能觉得你变化很多，其实你只是根据环境调整距离。",bound:"你的边界来自理解。当你理解一个人，距离自然会缩短。",key:"感知，然后选择。"},
+"潮汐型":{sum:"你的距离感不是固定的，而是随着关系和情绪变化。",desc:"你的边界像潮汐。有时候你希望拥抱整个世界，有时候你需要完全属于自己的海岸。这不是矛盾，而是一种流动。",beh:"你可能拥有较强的共情能力。对喜欢的人，你会投入很多，但也需要周期性的独处。",mis:"别人可能觉得你忽远忽近，其实你的距离变化，只是你在恢复能量。",bound:"你的边界不是一道线，而是一片会变化的海域。",key:"流动，也是一种稳定。"}
+};
+const models={
+"透明玻璃型":[35,65,40,90,85,80],"半掩门型":[70,70,75,60,55,80],"城墙型":[95,85,80,25,30,40],"镜面型":[75,45,90,55,60,65],"潮汐型":[55,75,60,75,70,95]};
+const dims=[["space","空间需求","你需要多少独处和私人区域"],["emotion","情绪边界","你如何决定哪些情绪可以进入你的世界"],["expression","边界表达","你是否愿意明确表达自己的需要"],["openness","关系开放","你允许别人靠近的速度"],["trust","信任建立","你如何确认一个人是否安全"],["elasticity","边界弹性","你调整距离的能力"]];
+function buildResult(){
+  const keys=dims.map(x=>x[0]),vals=keys.map(k=>Math.max(0,Math.min(100,Math.round(20 + (Math.max(0, Math.min(80, state.scores[k]+20)) / 80) * 75))));
+  let best="",bd=Infinity;Object.entries(models).forEach(([name,v])=>{let d=v.reduce((a,x,i)=>a+(x-vals[i])**2,0);if(d<bd){bd=d;best=name}});
+  const r=reports[best];show("result");$("resultName").innerHTML=`${best}<br><span style="font-size:17px;color:#d9c4a3">${r.sum}</span>`;$("resultQuote").textContent="隐藏关键词 · "+r.key;
+  drawRadar(vals);$("scores").innerHTML=dims.map((d,i)=>`<div class="scoreItem"><b>${d[1]}</b><span>${vals[i]} / 100</span></div>`).join("");
+  $("explains").innerHTML=dims.map(d=>`<div><b>${d[1]}</b><br>${d[2]}</div>`).join("");
+  $("report").innerHTML=`<div class="reportBlock"><h3>你的边界画像</h3><p>${r.desc}</p></div><div class="reportBlock"><h3>你在人际关系中的典型表现</h3><p>${r.beh}</p></div><div class="reportBlock"><h3>你最容易被误解的地方</h3><p>${r.mis}</p></div><div class="reportBlock"><h3>你的边界通常在哪里</h3><p>${r.bound}</p></div>`;
+}
+function drawRadar(vals){
+  const c=$("starChart"),x=c.getContext("2d"),cx=170,cy=170,R=105;x.clearRect(0,0,340,340);
+  const pt=(i,v,r=R)=>{let a=i*Math.PI/3-Math.PI/2;return [cx+Math.cos(a)*r*v/100,cy+Math.sin(a)*r*v/100]};
+  for(let l=20;l<=100;l+=20){x.beginPath();for(let i=0;i<6;i++){let p=pt(i,l);i?x.lineTo(...p):x.moveTo(...p)}x.closePath();x.strokeStyle="rgba(217,196,163,.13)";x.stroke()}
+  for(let i=0;i<6;i++){let p=pt(i,100);x.beginPath();x.moveTo(cx,cy);x.lineTo(...p);x.strokeStyle="rgba(255,255,255,.08)";x.stroke()}
+  x.beginPath();vals.forEach((v,i)=>{let p=pt(i,v);i?x.lineTo(...p):x.moveTo(...p)});x.closePath();x.fillStyle="rgba(217,196,163,.16)";x.fill();x.strokeStyle="#d9c4a3";x.lineWidth=2;x.stroke();
+  vals.forEach((v,i)=>{let p=pt(i,v);x.beginPath();x.fillStyle="#f3e5c5";x.arc(...p,5,0,7);x.fill()});
+  x.textAlign="center";x.textBaseline="middle";dims.forEach((d,i)=>{let p=pt(i,117);x.fillStyle="#e6e1d8";x.font="13px sans-serif";x.fillText(d[1],p[0],p[1]-8);x.fillStyle="#89919c";x.font="10px sans-serif";x.fillText(vals[i]+"分",p[0],p[1]+9)})
+}
+function makePoster(){
+  const c=document.createElement("canvas");c.width=900;c.height=1400;const x=c.getContext("2d");
+  x.fillStyle="#07090e";x.fillRect(0,0,900,1400);x.fillStyle="#d9c4a3";x.font="34px Georgia";x.fillText("BOUNDARY ARCHIVE",70,100);
+  x.fillStyle="#f3eee5";x.font="58px Georgia";x.fillText($("resultName").innerText.split("\n")[0],70,270);
+  x.fillStyle="#9da5b1";x.font="26px sans-serif";x.fillText("我的心理边界档案",70,340);
+  x.fillStyle="#d9c4a3";x.font="24px sans-serif";x.fillText("这个结果不是在判断你对不对。",70,1100);x.fillText("它只是描述你习惯如何与别人保持距离。",70,1150);
+  const a=document.createElement("a");a.download="我的心理边界档案.png";a.href=c.toDataURL("image/png");a.click()
+}
+const canvas=$("starfield"),ctx=canvas.getContext("2d");let stars=[];
+function resize(){canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);stars=Array.from({length:150},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:.3+Math.random()*1.5,s:.05+Math.random()*.3,a:Math.random()*6.28}))}
+function starsLoop(){ctx.clearRect(0,0,innerWidth,innerHeight);stars.forEach(s=>{s.y+=s.s;if(s.y>innerHeight)s.y=-5;s.a+=.015;ctx.fillStyle=`rgba(255,255,255,${.2+.25*Math.sin(s.a)})`;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill()});requestAnimationFrame(starsLoop)}
+resize();addEventListener("resize",resize);starsLoop();
+</script>
+</body>
+</html>
